@@ -2,4 +2,7 @@
 A decentralized blockchain solution for non-profit donation transparency.
 
 
-![Architecture Diagram](/Assets/achitecture.png)
+<p align="center">
+  <img src="https://github.com/williampsmith/Tithe/blob/master/Assets/architecture.png">
+  <br/>
+</p>
