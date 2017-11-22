@@ -3,7 +3,7 @@
 ## A decentralized blockchain solution for non-profit donation transparency.
 
 ### The Why
-Tithe’s mission is to alleviate non-profit corruption. All those Bugatti’s bought with non-profit money? Rest assured, Tithe to the rescue! With Tithe, donors will have full access to the transactions that non-profits make as well as the donations that flow into the non-profits. This transparency will incentivize users to put their money where it really matters and this will incentivise non-profits to be transparent because users will either donate through the dApp or not at all.
+Tithe’s mission is to alleviate non-profit corruption. All those Bugatti’s bought with non-profit money? Rest assured, Tithe to the rescue! With Tithe, donors have full access to the transactions that non-profits make as well as the donations that flow into the non-profits. This transparency will incentivize donors to put their money where it really matters and this will incentivize non-profits to be transparent because donors will either donate through Tithe or not at all.
 
 ### The How
 
