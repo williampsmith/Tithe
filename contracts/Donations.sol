@@ -13,7 +13,7 @@ contract Donations {
 
   mapping(address => Donation[]) private donations;
 
-  function donate() payable returns (bool) {
+  function donate() returns (bool) {
   }
 
 
