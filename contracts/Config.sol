@@ -1,10 +1,13 @@
 pragma solidity ^0.4.15;
 
+import './utils/StringUtils.sol';
+import './NPO.sol';
+
 contract Config {
     address owner;
 
     struct NPOMetadata {
-        address NPOContract;
+        NPO NPOContract;
         string name;
         string description;
         string[] buckets;
@@ -25,12 +28,12 @@ contract Config {
     function register(string name, string description, string[] buckets, string[] tags) returns (bool) {
         for (uint i = 0; i < NPOs.length; i++) {
             // TODO: might need keccak256 for string comparison or use manual string compare function
-            if (NPOs[i].name == name) {
+            if (StringUtils.equal(NPOs[i].name, name)) {
                 return false;
             }
         }
 
-        NPO newNPO = new NPO(msg.sender);
+        NPO newNPO = NPO(msg.sender);
         NPOMetadata newNPOMeta = NPOMetadata(newNPO, name, description, buckets, tags);
         NPOMeta[name] = newNPOMeta;
         NPOs.push(newNPOMeta);
@@ -40,7 +43,7 @@ contract Config {
             bool found = false;
             for (uint j = 0; j < allBuckets.length; j++) {
                 // TODO: might need keccak256 for string comparison or use manual string compare function
-                if (allBuckets[j] == buckets[i]) {
+                if (StringUtils.equal(allBuckets[j], buckets[i])) {
                     found = true;
                     break;
                 }
