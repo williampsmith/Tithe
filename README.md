@@ -72,6 +72,9 @@ Returns donation tracking info from donor
 `(optional) String donation_id` -- donation hash key.
 
 
+---
+
+
 `POST /api/v1/npo/config/`
 Configures a new NPO contract with the provided configuration options. Returns an org_id, and updates the data structures in the config contract to make the NPO searchable.
 
@@ -83,6 +86,10 @@ Configures a new NPO contract with the provided configuration options. Returns a
 .
 .
 
+
+----
+
+
 `GET /api/v1/donor/search/`
 Provides discoverability of NPO’s based on criteria such as search phrases and NPO name.
 
@@ -91,12 +98,18 @@ Provides discoverability of NPO’s based on criteria such as search phrases and
 `(optional) String org_key` -- Search for information of NPO that corresponds to the provided org_id
 
 
+----
+
+
 `POST /api/v1/donor/login/`
 Login and return session token for caching
 
 #### Parameters
 `String donor_id`
 `String pw_hash`
+
+
+----
 
 
 
@@ -108,6 +121,9 @@ Login and return session token for caching
 `String pw_hash`
 
 
+----
+
+
 `POST /api/v1/npo/withdraw/`
 Performs a spend transaction of the specified amount between the NPO and the specified account, from the specified spend bucket.
 
@@ -116,6 +132,9 @@ Performs a spend transaction of the specified amount between the NPO and the spe
 `String session_key` -- key of open authenticated session
 `String bucket` -- bucket from which you wish to withdraw
 `Int amount` -- amount in wei
+
+
+----
 
 
 `POST /api/v1/npo/donate/`
