@@ -41,9 +41,9 @@ contract NPO {
             donorArray.push(Donation(msg.sender, msg.value));
         }
 
-        categoryBalances[category] += msg.value;
-        donationAmount[msg.sender] += msg.value;
-        remainingBalance[msg.sender] += msg.value;
+        categoryBalances[category] = SafeMath.add(categoryBalances[category], msg.value);
+        donationAmount[msg.sender] = SafeMath.add(donationAmount[msg.sender], msg.value);
+        remainingBalance[msg.sender] = SafeMath.add(remainingBalance[msg.sender], msg.value);
         Donate(msg.sender, owner, msg.value);
         return true;
     }
@@ -56,22 +56,22 @@ contract NPO {
         uint256[donorArray.length] memory withdrawals;
         Donation[] storage donorArray = categoryDonations[category];
 
-        categoryBalances[category] -= amount;
+        categoryBalances[category] = SafeMath.sub(categoryBalances[category], amount);
         uint256 remaining = amount;
         for (uint i = 0; (i < donorArray.length) && (remaining > 0); i++) {
             uint256 withdrawal = Math.min256(donorArray[i].balance, remaining);
             withdrawals[i] = withdrawal;
-            remainingBalance[donorArray[i].donor] -= withdrawal;
-            donorArray[i].balance -= withdrawal;
-            remaining -= withdrawal;
+            remainingBalance[donorArray[i].donor] = SafeMath.sub(remainingBalance[donorArray[i].donor], withdrawal);
+            donorArray[i].balance = SafeMath.sub(donorArray[i].balance, withdrawal);
+            remaining = SafeMath.sub(remaining, withdrawal);
         }
 
         if (!(_to.send(amount))) {
             remaining = amount;
-            categoryBalances[category] += amount;
+            categoryBalances[category] = SafeMath.add(categoryBalances[category], amount);
             for (uint i = 0; i < withdrawals.length; i++) {
-                remainingBalance[donorArray[i].donor] += withdrawals[i];
-                donorArray[i].balance += withdrawals[i];
+                remainingBalance[donorArray[i].donor] = SafeMath.add(remainingBalance[donorArray[i].donor], withdrawals[i]);
+                donorArray[i].balance = SafeMath.add(donorArray[i].balance, withdrawals[i]);
                 withdrawals[i] = 0;
             }
 
