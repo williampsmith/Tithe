@@ -91,4 +91,3 @@ contract Config {
         return true;
     }
 }
-
