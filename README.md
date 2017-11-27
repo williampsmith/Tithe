@@ -42,6 +42,7 @@ Struct NPO {
 NonProfits: `mapping (name => NPO)`
 
 `Register()`: Deploys a NPO contract for each new non-profit, Mapping ID or Non-profit Name to Donations contract
+
 `GetNPOAddress(name)`: get NPO contract address of the non-profit named name
 
 
@@ -69,6 +70,7 @@ Returns donation tracking info from donor
 
 #### Parameters:
 `String donor_id` -- donor public key
+
 `(optional) String donation_id` -- donation hash key.
 
 
@@ -80,8 +82,11 @@ Configures a new NPO contract with the provided configuration options. Returns a
 
 #### Parameters:
 `String org_name` -- 501(c)(3) registered name of NPO
+
 `String statement` -- Summary of what your non-profit does. This will be what prospective donors see about your NPO in search results.
+
 `String[] tags` -- list of tags to make your NPO more easily discoverable by prospective donors.
+
 .
 .
 .
@@ -94,7 +99,9 @@ Configures a new NPO contract with the provided configuration options. Returns a
 Provides discoverability of NPO’s based on criteria such as search phrases and NPO name.
 
 `(optional) String q` -- search string. Will perform a relevance search by tag string matching.
+
 `(optional) String org_name` -- Search for information of NPO that corresponds to the provided org_name
+
 `(optional) String org_key` -- Search for information of NPO that corresponds to the provided org_id
 
 
@@ -106,6 +113,7 @@ Login and return session token for caching
 
 #### Parameters
 `String donor_id`
+
 `String pw_hash`
 
 
@@ -118,6 +126,7 @@ Login and return session token for caching
 
 #### Parameters
 `String org_id`
+
 `String pw_hash`
 
 
@@ -129,8 +138,11 @@ Performs a spend transaction of the specified amount between the NPO and the spe
 
 #### Parameters
 `String org_id`
+
 `String session_key` -- key of open authenticated session
+
 `String bucket` -- bucket from which you wish to withdraw
+
 `Int amount` -- amount in wei
 
 
@@ -142,6 +154,9 @@ Performs a donate transaction of the specified amount between the donor and the 
 
 #### Parameters
 `String donor_id`
+
 `String session_key` -- key of open authenticated session
+
 `Int amount` -- amount in wei
+
 `(optional) String bucket` -- bucket from which you wish funds to be spent. If not provided, can be spent freely.
