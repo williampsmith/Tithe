@@ -7,6 +7,7 @@ contract NPO {
     address owner;
 
     struct Donation {
+        uint256 id;  // unique key for donation
         address donor;
         uint256 balance;
     }
