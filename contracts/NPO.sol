@@ -23,9 +23,8 @@ contract NPO {
         if (msg.sender == owner) {_;}
     }
 
-    function NPO() {
-        owner = msg.sender;
-
+    function NPO(address NPOAddr) {
+        owner = NPOAddr;
     }
 
     function donate(string category) payable returns (bool) {
@@ -55,8 +54,8 @@ contract NPO {
             return false;
         }
 
-        uint256[] memory withdrawals;
         Donation[] storage donorArray = categoryDonations[category];
+        uint256[] memory withdrawals;
 
         categoryBalances[category] = SafeMath.sub(categoryBalances[category], amount);
         uint256 remaining = amount;
