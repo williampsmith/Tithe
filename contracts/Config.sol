@@ -4,7 +4,7 @@ contract Config {
     address owner;
 
     struct NPOMetadata {
-        NPO NPOContract;
+        address NPOContract;
         string name;
         string description;
         string[] buckets;
