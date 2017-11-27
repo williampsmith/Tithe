@@ -24,6 +24,7 @@ contract NPO {
 
     function NPO() {
         owner = msg.sender;
+
     }
 
     function donate(string category) payable returns (bool) {
@@ -61,7 +62,8 @@ contract NPO {
         for (uint i = 0; (i < donorArray.length) && (remaining > 0); i++) {
             uint256 withdrawal = Math.min256(donorArray[i].balance, remaining);
             withdrawals[i] = withdrawal;
-            remainingBalance[donorArray[i].donor] = SafeMath.sub(remainingBalance[donorArray[i].donor], withdrawal);
+            remainingBalance[donorArray[i].donor] = SafeMath.sub(
+              remainingBalance[donorArray[i].donor], withdrawal);
             donorArray[i].balance = SafeMath.sub(donorArray[i].balance, withdrawal);
             remaining = SafeMath.sub(remaining, withdrawal);
         }
@@ -70,7 +72,8 @@ contract NPO {
             remaining = amount;
             categoryBalances[category] = SafeMath.add(categoryBalances[category], amount);
             for (i = 0; i < withdrawals.length; i++) {
-                remainingBalance[donorArray[i].donor] = SafeMath.add(remainingBalance[donorArray[i].donor], withdrawals[i]);
+                remainingBalance[donorArray[i].donor] = SafeMath.add(
+                  remainingBalance[donorArray[i].donor], withdrawals[i]);
                 donorArray[i].balance = SafeMath.add(donorArray[i].balance, withdrawals[i]);
                 withdrawals[i] = 0;
             }
