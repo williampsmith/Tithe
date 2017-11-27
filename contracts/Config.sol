@@ -22,17 +22,24 @@ contract Config {
         owner = msg.sender;
     }
 
-    function register(string name, string description, string[] buckets, string[] tags) {
+    function register(string name, string description, string[] buckets, string[] tags) returns (bool) {
+        for (uint i = 0; i < NPOs.length; i++) {
+            // TODO: might need keccak256 for string comparison or use manual string compare function
+            if (NPOs[i].name == name) {
+                return false;
+            }
+        }
+
         NPO newNPO = new NPO(msg.sender);
         NPOMetadata newNPOMeta = NPOMetadata(newNPO, name, description, buckets, tags);
         NPOMeta[name] = newNPOMeta;
         NPOs.push(newNPOMeta);
 
-        for (uint i = 0; i < buckets.length; i++) {
+        for (i = 0; i < buckets.length; i++) {
             bucketToNPO[buckets[i]].push(newNPOMeta);
             bool found = false;
             for (uint j = 0; j < allBuckets.length; j++) {
-                // might need keccak256 for string comparison or use manual string compare function
+                // TODO: might need keccak256 for string comparison or use manual string compare function
                 if (allBuckets[j] == buckets[i]) {
                     found = true;
                     break;
@@ -47,7 +54,7 @@ contract Config {
             tagToNPO[tags[i]].push(newNPOMeta);
             found = false;
             for (j = 0; j < allTags.length; j++) {
-                // might need keccak256 for string comparison or use manual string compare function
+                // TODO: might need keccak256 for string comparison or use manual string compare function
                 if (allTags[j] == tags[i]) {
                     found = true;
                     break;
@@ -57,6 +64,8 @@ contract Config {
                 allTags.push[tags[i]];
             }
         }
+
+        return true;
     }
 
     function getNPO(string name) {
