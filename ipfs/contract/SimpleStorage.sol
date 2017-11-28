@@ -1,4 +1,4 @@
-contract NotSoSimpleStorage {
+contract SimpleStorage {
     string storedData;
 
     function set(string x) {
@@ -9,4 +9,3 @@ contract NotSoSimpleStorage {
         return storedData;
     }
 }
-
