@@ -8,13 +8,13 @@ contract('npoTest', function(accounts) {
      * ones
      */
     const args = {tags: ["food", "hunger"], categories: ["feed the hungry", "school"]};
-    const clients = {_owner: accounts[0], donor1: accounts[1], donor2: accounts[2]};
+    const clients = {owner: accounts[0], donor1: accounts[1], donor2: accounts[2]};
     let donations_contract, npo;
 
     /* Do something before every `describe` method */
     beforeEach(async function() {
         donations_contract = await Donations.new(accounts[0]);
-        npo = await NPO.new(accounts[0], donations_contract.contractAddress, tags, categories);
+        npo = await NPO.new(clients.owner, donations_contract.contractAddress, tags, categories);
     });
 
     /* Group test cases together
