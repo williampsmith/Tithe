@@ -11,16 +11,15 @@ contract Config {
         address npoAddress;
         string name;
         string description;
-        string[] buckets;
+        string[] categories;
         string[] tags;
     }
 
     NPOMetadata[] private NPOs;
-    string[] private allBuckets;
+    string[] private allcategories;
     string[] private allTags;
     mapping(string => NPOMetadata) private NPOMeta;
     mapping(string => NPOMetadata[]) private tagToNPO;
-    mapping(string => NPOMetadata[]) private bucketToNPO;
 
     function Config() { // NOTE: should only ever be instantiated once!
         owner = msg.sender;
@@ -28,36 +27,22 @@ contract Config {
         donationsContract = new Donations(msg.sender);
     }
 
-    function register(string name, string description, string[] buckets, string[] tags) returns (bool) {
+    function register(string name, string description, string[] categories, string[] tags) returns (bool) {
         for (uint i = 0; i < NPOs.length; i++) {
             if (StringUtils.equal(NPOs[i].name, name)) {
                 return false;
             }
         }
 
-        NPO newNPO = new NPO(msg.sender);
-        NPOMetadata storage newNPOMeta = NPOMetadata(address(newNPO), name, description, buckets, tags);
+        NPO newNPO = new NPO(msg.sender, address(donationsContract), tags, categories);
+        NPOMetadata storage newNPOMeta = NPOMetadata(address(newNPO), name, description, categories, tags);
         NPOMeta[name] = newNPOMeta;
         NPOs.push(newNPOMeta);
 
-        for (i = 0; i < buckets.length; i++) {
-            bucketToNPO[buckets[i]].push(newNPOMeta);
-            bool found = false;
-            for (uint j = 0; j < allBuckets.length; j++) {
-                if (StringUtils.equal(allBuckets[j], buckets[i])) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                allBuckets.push(buckets[i]);
-            }
-        }
-
         for (i = 0; i < tags.length; i++) {
             tagToNPO[tags[i]].push(newNPOMeta);
-            found = false;
-            for (j = 0; j < allTags.length; j++) {
+            bool found = false;
+            for (uint j = 0; j < allTags.length; j++) {
                 if (StringUtils.equal(allTags[j], tags[i])) {
                     found = true;
                     break;
@@ -72,24 +57,15 @@ contract Config {
     }
 
     function getNPO(string name) returns (string, string, string[], string[]) {
-        NPOMetadata metadata = NPOMeta[name];
-        return (metadata.name, metadata.description, metadata.buckets, metadata.tags);
+        return (NPOMeta[name].name, NPOMeta[name].description, NPOMeta[name].categories, NPOMeta[name].tags);
     }
 
-    function getBuckets(address npo) returns (string[]) {
-        return allBuckets;
+    function getcategories(address npo) returns (string[]) {
+        return allcategories;
     }
 
     function getTags() returns (string[]) {
         return allTags;
-    }
-
-    function searchBucket(string bucket) returns (string[]) {
-        string[] metadata =
-        for (int i = 0; i < bucketToNPO[bucket].length; i++) {
-          
-        }
-        return bucketToNPO[bucket];
     }
 
     function searchTag(string tag) returns (NPOMetadata[]) {
