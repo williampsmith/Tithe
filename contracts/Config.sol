@@ -5,9 +5,10 @@ import './NPO.sol';
 
 contract Config {
     address owner;
+    Donations donationsContract;
 
     struct NPOMetadata {
-        NPO NPOContract;
+        address npoAddress;
         string name;
         string description;
         string[] buckets;
@@ -21,20 +22,21 @@ contract Config {
     mapping(string => NPOMetadata[]) private tagToNPO;
     mapping(string => NPOMetadata[]) private bucketToNPO;
 
-    function Config() {
+    function Config() { // NOTE: should only ever be instantiated once!
         owner = msg.sender;
+        // instantate and set the owner of Donations
+        donationsContract = new Donations(msg.sender);
     }
 
     function register(string name, string description, string[] buckets, string[] tags) returns (bool) {
         for (uint i = 0; i < NPOs.length; i++) {
-            // TODO: might need keccak256 for string comparison or use manual string compare function
             if (StringUtils.equal(NPOs[i].name, name)) {
                 return false;
             }
         }
 
-        NPO newNPO = NPO(msg.sender);
-        NPOMetadata newNPOMeta = NPOMetadata(newNPO, name, description, buckets, tags);
+        NPO newNPO = new NPO(msg.sender);
+        NPOMetadata storage newNPOMeta = NPOMetadata(address(newNPO), name, description, buckets, tags);
         NPOMeta[name] = newNPOMeta;
         NPOs.push(newNPOMeta);
 
@@ -42,14 +44,13 @@ contract Config {
             bucketToNPO[buckets[i]].push(newNPOMeta);
             bool found = false;
             for (uint j = 0; j < allBuckets.length; j++) {
-                // TODO: might need keccak256 for string comparison or use manual string compare function
                 if (StringUtils.equal(allBuckets[j], buckets[i])) {
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                allBuckets.push[buckets[i]];
+                allBuckets.push(buckets[i]);
             }
         }
 
@@ -57,49 +58,41 @@ contract Config {
             tagToNPO[tags[i]].push(newNPOMeta);
             found = false;
             for (j = 0; j < allTags.length; j++) {
-                // TODO: might need keccak256 for string comparison or use manual string compare function
-                if (allTags[j] == tags[i]) {
+                if (StringUtils.equal(allTags[j], tags[i])) {
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                allTags.push[tags[i]];
+                allTags.push(tags[i]);
             }
         }
 
         return true;
     }
 
-    function getNPO(string name) {
-        return NPOMeta[name];
+    function getNPO(string name) returns (string, string, string[], string[]) {
+        NPOMetadata metadata = NPOMeta[name];
+        return (metadata.name, metadata.description, metadata.buckets, metadata.tags);
     }
 
-    function getBuckets() {
+    function getBuckets(address npo) returns (string[]) {
         return allBuckets;
     }
 
-    function getTags() {
+    function getTags() returns (string[]) {
         return allTags;
     }
 
-    function searchBucket(string bucket) {
+    function searchBucket(string bucket) returns (string[]) {
+        string[] metadata =
+        for (int i = 0; i < bucketToNPO[bucket].length; i++) {
+          
+        }
         return bucketToNPO[bucket];
     }
 
-    function searchTag(string tag) {
+    function searchTag(string tag) returns (NPOMetadata[]) {
         return tagToNPO[tag];
-    }
-
-    function stringsEqual(string memory _a, string memory _b) internal returns (bool) {
-        bytes memory a = bytes(_a);
-        bytes memory b = bytes(_b);
-        if (a.length != b.length)
-            return false;
-        // @todo unroll this loop
-        for (uint i = 0; i < a.length; i ++)
-            if (a[i] != b[i])
-                return false;
-        return true;
     }
 }
