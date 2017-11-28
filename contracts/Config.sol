@@ -35,7 +35,7 @@ contract Config {
         }
 
         NPO newNPO = new NPO(msg.sender, address(donationsContract), tags, categories);
-        NPOMetadata storage newNPOMeta = NPOMetadata(address(newNPO), name, description, categories, tags);
+        NPOMetadata memory newNPOMeta = NPOMetadata(address(newNPO), name, description, categories, tags);
         NPOMeta[name] = newNPOMeta;
         NPOs.push(newNPOMeta);
 
@@ -68,7 +68,17 @@ contract Config {
         return allTags;
     }
 
-    function searchTag(string tag) returns (NPOMetadata[]) {
-        return tagToNPO[tag];
+    function metaDataToString(NPOMetadata metadata) internal returns (string) {
+      // TODO: implement
+    }
+
+    function searchTag(string tag) returns (string[2**24 - 1], uint256 numTags) {
+        string[2**24 - 1] memory npoMetaStrings;
+
+        NPOMetadata[] memory metas = tagToNPO[tag];
+        for (uint i = 0; i < metas.length; i++) {
+          npoMetaStrings[i] = metaDataToString(metas[i]);
+        }
+        return (npoMetaStrings, metas.length);
     }
 }
