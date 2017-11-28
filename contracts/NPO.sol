@@ -22,7 +22,6 @@ contract NPO {
     mapping(string => Donation[]) public donationsByCategory;
     mapping(bytes16 => Donation[]) public donationsByID;
     mapping(string => uint256) private balanceByCategory;
-    /*mapping(address => uint256) private donationAmount;*/
     mapping(address => uint256) private remainingBalance;
 
     event Donate(address indexed _from, address indexed _to, uint256 _value);
@@ -42,11 +41,11 @@ contract NPO {
 
     function donate(string category) payable returns (bool) {
         bytes16 id = uuidProvider.UUID4();
-        Donation storage donation = Donation(id, msg.sender, msg.value);
+        Donation memory donation = Donation(id, msg.sender, msg.value);
         donationsByCategory[category].push(donation);
         donationsByID[id].push(donation);
         balanceByCategory[category] = SafeMath.add(balanceByCategory[category], msg.value);
-        Donations.logDonation(id, msg.sender, this, msg.value, "");
+        Donations.logDonation(id, msg.sender, address(this), msg.value, "");
         Donate(msg.sender, owner, msg.value);
         return true;
     }
@@ -67,7 +66,7 @@ contract NPO {
             uint256 withdrawal = Math.min256(donationsList[i].balance, remaining);
             donationsList[i].balance = SafeMath.sub(donationsList[i].balance, withdrawal);
             remaining = SafeMath.sub(remaining, withdrawal);
-            Donations.logWithdrawal(this, donationsList[i].id, withdrawal, usedFor);
+            Donations.logWithdrawal(address(this), donationsList[i].id, withdrawal, usedFor);
         }
         return true;
     }

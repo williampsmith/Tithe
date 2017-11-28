@@ -27,8 +27,8 @@ contract Donations {
   }
 
 
-  function logDonation(bytes16 id, address donor, address npo, uint256 amount, string usedFor) {
-    string[] storage emptyDonationsList; // TODO: fix this
+  function logDonation(bytes16 id, address donor, address npo, uint amount, string usedFor) {
+    string[] memory emptyDonationsList;
     donationsByID[npo][id] = Donation(id, donor, npo, amount, emptyDonationsList);
     balanceByDonor[donor] = SafeMath.add(balanceByDonor[donor], amount);
   }
