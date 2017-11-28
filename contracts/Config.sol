@@ -21,13 +21,14 @@ contract Config {
     mapping(string => NPOMetadata[]) private tagToNPO;
     mapping(string => NPOMetadata[]) private bucketToNPO;
 
+    // TODO: may need keccak256 of string instead of string as key in mapping
+
     function Config() {
         owner = msg.sender;
     }
 
     function register(string name, string description, string[] buckets, string[] tags) returns (bool) {
         for (uint i = 0; i < NPOs.length; i++) {
-            // TODO: might need keccak256 for string comparison or use manual string compare function
             if (StringUtils.equal(NPOs[i].name, name)) {
                 return false;
             }
@@ -42,7 +43,6 @@ contract Config {
             bucketToNPO[buckets[i]].push(newNPOMeta);
             bool found = false;
             for (uint j = 0; j < allBuckets.length; j++) {
-                // TODO: might need keccak256 for string comparison or use manual string compare function
                 if (StringUtils.equal(allBuckets[j], buckets[i])) {
                     found = true;
                     break;
@@ -57,7 +57,6 @@ contract Config {
             tagToNPO[tags[i]].push(newNPOMeta);
             found = false;
             for (j = 0; j < allTags.length; j++) {
-                // TODO: might need keccak256 for string comparison or use manual string compare function
                 if (allTags[j] == tags[i]) {
                     found = true;
                     break;
@@ -91,15 +90,15 @@ contract Config {
         return tagToNPO[tag];
     }
 
-    function stringsEqual(string memory _a, string memory _b) internal returns (bool) {
-        bytes memory a = bytes(_a);
-        bytes memory b = bytes(_b);
-        if (a.length != b.length)
-            return false;
-        // @todo unroll this loop
-        for (uint i = 0; i < a.length; i ++)
-            if (a[i] != b[i])
-                return false;
-        return true;
-    }
+    // function stringsEqual(string memory _a, string memory _b) internal returns (bool) {
+    //     bytes memory a = bytes(_a);
+    //     bytes memory b = bytes(_b);
+    //     if (a.length != b.length)
+    //         return false;
+    //     // @todo unroll this loop
+    //     for (uint i = 0; i < a.length; i ++)
+    //         if (a[i] != b[i])
+    //             return false;
+    //     return true;
+    // }
 }
