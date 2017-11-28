@@ -62,11 +62,12 @@ contract NPO {
 
         balanceByCategory[category] = SafeMath.sub(balanceByCategory[category], amount);
         uint256 remaining = amount;
-        for (uint i = 0; (i < donationsByCategory[category].length) && (remaining > 0); i++) {
-            uint256 withdrawal = Math.min256(donationsByCategory[i].balance, remaining);
-            donationsByCategory[i].balance = SafeMath.sub(donationsByCategory[i].balance, withdrawal);
+        Donation[] storage donationsList = donationsByCategory[category];
+        for (uint i = 0; (i < donationsList.length) && (remaining > 0); i++) {
+            uint256 withdrawal = Math.min256(donationsList[i].balance, remaining);
+            donationsList[i].balance = SafeMath.sub(donationsList[i].balance, withdrawal);
             remaining = SafeMath.sub(remaining, withdrawal);
-            Donations.logWithdrawal(this, donationsByCategory[i].id, withdrawal, usedFor);
+            Donations.logWithdrawal(this, donationsList[i].id, withdrawal, usedFor);
         }
         return true;
     }
