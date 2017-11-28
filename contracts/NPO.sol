@@ -7,12 +7,12 @@ contract NPO {
     address owner;
 
     struct Donation {
-        uint256 id;  // unique key for donation
+        uint256 id;  // TODO: utilize
         address donor;
         uint256 balance;
     }
 
-    mapping(string => Donation[]) private categoryDonations;
+    mapping(string => Donation[]) public categoryDonations;
     mapping(string => uint256) private categoryBalances;
     mapping(address => uint256) private donationAmount;
     mapping(address => uint256) private remainingBalance;
