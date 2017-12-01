@@ -45,12 +45,13 @@ contract NPO {
         donationsByCategory[category].push(donation);
         donationsByID[id].push(donation);
         balanceByCategory[category] = SafeMath.add(balanceByCategory[category], msg.value);
-        Donations.logDonation(id, msg.sender, address(this), msg.value, "");
+        donationsContract.logDonation(id, msg.sender, address(this), msg.value, "");
         Donate(msg.sender, owner, msg.value);
         return true;
     }
 
-    function spendBalance(uint256 amount, string category, address _to, string usedFor) OwnerOnly() returns (bool) {
+    function spendBalance(uint256 amount, string category, address _to, string usedFor)
+      OwnerOnly() returns (bool) {
         // TODO: add functionality so that usedFor is simehow auto-populated by
         // the transaction. This way it is not forgeable by the NPO.
         if (amount < 0 || balanceByCategory[category] < amount) {
@@ -66,7 +67,12 @@ contract NPO {
             uint256 withdrawal = Math.min256(donationsList[i].balance, remaining);
             donationsList[i].balance = SafeMath.sub(donationsList[i].balance, withdrawal);
             remaining = SafeMath.sub(remaining, withdrawal);
-            Donations.logWithdrawal(address(this), donationsList[i].id, withdrawal, usedFor);
+            donationsContract.logWithdrawal(
+              address(this),
+              donationsList[i].id,
+              withdrawal,
+              usedFor,
+            );
         }
         return true;
     }
