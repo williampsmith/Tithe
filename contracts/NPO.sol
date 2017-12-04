@@ -71,7 +71,7 @@ contract NPO {
               address(this),
               donationsList[i].id,
               withdrawal,
-              usedFor,
+              usedFor
             );
         }
         return true;
